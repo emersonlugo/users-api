@@ -9,19 +9,17 @@ func Test_MemoryRepository_GetAll(t *testing.T) {
 	testCases := []struct {
 		name          string
 		users         []*User
-		expectedSize  int
+		expectedUsers  []*User
 		expectedError error
 	}{
 		{
 			name:          "Should return error when not found users",
 			users:         []*User{},
-			expectedSize:  0,
 			expectedError: ErrorUsersNotFound,
 		},
 		{
 			name:          "Should return all users",
 			users:         mockUsers(),
-			expectedSize:  2,
 			expectedError: nil,
 		},
 	}
@@ -30,8 +28,8 @@ func Test_MemoryRepository_GetAll(t *testing.T) {
 		repository := NewInMemoryUserRepository(tc.users...)
 		users, err := repository.GetAll()
 
-		if len(users) != tc.expectedSize {
-			t.Errorf("%d:%s: got %v; want %v; got size %v; want size %v", i, tc.name, users, tc.users, len(users), tc.expectedSize)
+		if !reflect.DeepEqual(users, tc.users){
+			t.Errorf("%d:%s: got %v; want %v", i, tc.name, users, tc.users)
 		}
 
 		if err != tc.expectedError {
