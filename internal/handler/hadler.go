@@ -28,6 +28,7 @@ func (handler *usersHandler) pingServerHTTP(response http.ResponseWriter, r *htt
 }
 
 func (handler *usersHandler) usersServeHTTP(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Content-Type", "application/json")
 	switch request.Method {
 	case http.MethodGet:
 		handler.getUsers(response, request)
@@ -53,7 +54,7 @@ func (handler *usersHandler) getUsers(response http.ResponseWriter, request *htt
 		handlerError(response, err)
 		return
 	}
-	response.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(response).Encode(usersResponse)
 }
 
@@ -63,7 +64,7 @@ func (handler *usersHandler) getUserByID(response http.ResponseWriter, userID st
 		handlerError(response, err)
 		return
 	}
-	response.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(response).Encode(user)
 }
 
@@ -73,7 +74,6 @@ func (handler *usersHandler) saveUser(response http.ResponseWriter, request *htt
 		return
 	}
 	user := handler.userService.Save(userBody)
-	response.Header().Set("Content-Type", "application/json")
 	response.WriteHeader(http.StatusCreated)
 	json.NewEncoder(response).Encode(user)
 }

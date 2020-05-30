@@ -22,9 +22,9 @@ type memoryRepository struct {
 	users []*User
 }
 
-func NewInMemoryUserRepository() Repository {
+func NewInMemoryUserRepository(users ...*User) Repository {
 	return &memoryRepository{
-		users: []*User{},
+		users: append([]*User{}, users...),
 	}
 }
 
