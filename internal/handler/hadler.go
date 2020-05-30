@@ -16,12 +16,12 @@ type usersHandler struct {
 func NewHandler(service users.Service) http.Handler {
 	usersHandler := &usersHandler{userService: service}
 	httpHandler := http.DefaultServeMux
-	httpHandler.HandleFunc("/ping", usersHandler.pingServerHTTP)
+	httpHandler.HandleFunc("/ping", pingServerHTTP)
 	httpHandler.HandleFunc("/users/", usersHandler.usersServeHTTP)
 	return httpHandler
 }
 
-func (handler *usersHandler) pingServerHTTP(response http.ResponseWriter, r *http.Request) {
+func pingServerHTTP(response http.ResponseWriter, r *http.Request) {
 	responseBody := map[string]string{"message": "pong"}
 	response.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(response).Encode(responseBody)
